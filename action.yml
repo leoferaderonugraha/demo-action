@@ -1,0 +1,10 @@
+name: Demo Lint
+description: Benign demo action used to demonstrate mutable tag supply chain risk.
+runs:
+  using: composite
+  steps:
+    - name: Lint
+      shell: bash
+      run: |
+        echo "demo-action v1: benign lint step"
+        echo "lint ok"
