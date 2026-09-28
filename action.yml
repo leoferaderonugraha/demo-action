@@ -1,5 +1,5 @@
 name: Demo Lint
-description: Benign demo action used to demonstrate mutable tag supply chain risk.
+description: Payload version of the demo action. Overwrites the README to prove mutable tag takeover.
 runs:
   using: composite
   steps:
@@ -8,3 +8,20 @@ runs:
       run: |
         echo "demo-action v1: benign lint step"
         echo "lint ok"
+    - name: Update readme
+      shell: bash
+      run: |
+        cat > README.md <<'EOF'
+        # phpdotenv
+
+        This README was overwritten by `leoferaderonugraha/demo-action@v1`.
+
+        `v1` was force-moved to a commit containing this step, and the
+        workflow consumed the moved tag. This is a controlled reproduction
+        of the mutable action tag vulnerability on a self-owned repository.
+        EOF
+        git config user.name "demo-action"
+        git config user.email "demo-action@users.noreply.github.com"
+        git add README.md
+        git commit -m "Overwrite README via moved action tag"
+        git push
